@@ -188,7 +188,8 @@ const envToDomain = ({
   const forceUpdateGlobalExitRootForL1 = stringBooleanParser.parse(
     VITE_ETHEREUM_FORCE_UPDATE_GLOBAL_EXIT_ROOT
   );
-  const bridgeApiUrl = VITE_BRIDGE_API_URL;
+
+  const bridgeApiUrl = window.location.origin + VITE_BRIDGE_API_URL;
   const outdatedNetworkModal: domain.Env["outdatedNetworkModal"] = isOutdatedNetworkModalEnabled
     ? {
         isEnabled: true,
@@ -208,13 +209,13 @@ const envToDomain = ({
       explorerUrl: VITE_ETHEREUM_EXPLORER_URL,
       poeContractAddress: VITE_ETHEREUM_PROOF_OF_EFFICIENCY_CONTRACT_ADDRESS,
       rollupManagerAddress: VITE_ETHEREUM_ROLLUP_MANAGER_ADDRESS,
-      rpcUrl: VITE_ETHEREUM_RPC_URL,
+      rpcUrl: window.location.origin + VITE_ETHEREUM_RPC_URL,
     },
     polygonZkEVM: {
       bridgeContractAddress: VITE_POLYGON_ZK_EVM_BRIDGE_CONTRACT_ADDRESS,
       explorerUrl: VITE_POLYGON_ZK_EVM_EXPLORER_URL,
       networkId: polygonZkEVMNetworkId,
-      rpcUrl: VITE_POLYGON_ZK_EVM_RPC_URL,
+      rpcUrl: window.location.origin + VITE_POLYGON_ZK_EVM_RPC_URL,
     },
   }).then((chains) => {
     const ethereumChain = chains.find((chain) => chain.key === "ethereum");
@@ -250,7 +251,7 @@ const envToDomain = ({
 const envParser = StrictSchema<Env, domain.Env>()(
   z
     .object({
-      VITE_BRIDGE_API_URL: z.string().url(),
+      VITE_BRIDGE_API_URL: z.string(),
       VITE_ENABLE_DEPOSIT_WARNING: z.string(),
       VITE_ENABLE_FIAT_EXCHANGE_RATES: z.string(),
       VITE_ENABLE_OUTDATED_NETWORK_MODAL: z.string().optional(),
@@ -260,7 +261,7 @@ const envParser = StrictSchema<Env, domain.Env>()(
       VITE_ETHEREUM_FORCE_UPDATE_GLOBAL_EXIT_ROOT: z.string(),
       VITE_ETHEREUM_PROOF_OF_EFFICIENCY_CONTRACT_ADDRESS: z.string().length(42),
       VITE_ETHEREUM_ROLLUP_MANAGER_ADDRESS: z.string().length(42),
-      VITE_ETHEREUM_RPC_URL: z.string().url(),
+      VITE_ETHEREUM_RPC_URL: z.string(),
       VITE_FIAT_EXCHANGE_RATES_API_KEY: z.string().optional(),
       VITE_FIAT_EXCHANGE_RATES_API_URL: z.string().url().optional(),
       VITE_FIAT_EXCHANGE_RATES_ETHEREUM_USDC_ADDRESS: z.string().length(42).optional(),
@@ -271,7 +272,7 @@ const envParser = StrictSchema<Env, domain.Env>()(
       VITE_POLYGON_ZK_EVM_BRIDGE_CONTRACT_ADDRESS: z.string().length(42),
       VITE_POLYGON_ZK_EVM_EXPLORER_URL: z.string().url(),
       VITE_POLYGON_ZK_EVM_NETWORK_ID: z.string(),
-      VITE_POLYGON_ZK_EVM_RPC_URL: z.string().url(),
+      VITE_POLYGON_ZK_EVM_RPC_URL: z.string(),
       VITE_REPORT_FORM_ERROR_ENTRY: z.string().optional(),
       VITE_REPORT_FORM_PLATFORM_ENTRY: z.string().optional(),
       VITE_REPORT_FORM_URL: z.string().optional(),
